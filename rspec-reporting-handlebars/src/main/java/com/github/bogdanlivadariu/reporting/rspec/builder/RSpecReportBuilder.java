@@ -17,7 +17,6 @@ import org.apache.commons.io.FileUtils;
 import com.github.bogdanlivadariu.reporting.rspec.helpers.Constants;
 import com.github.bogdanlivadariu.reporting.rspec.helpers.Helpers;
 import com.github.bogdanlivadariu.reporting.rspec.xml.models.TestSuiteModel;
-import com.github.bogdanlivadariu.reporting.rspec.xml.models.TestSuitesModel;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 
@@ -38,18 +37,18 @@ public class RSpecReportBuilder {
         TEST_SUMMARY_PATH = targetBuildPath + "/test-summary/";
         processedTestSuites = new ArrayList<>();
 
-        JAXBContext cntx = JAXBContext.newInstance(TestSuitesModel.class);
+        JAXBContext cntx = JAXBContext.newInstance(TestSuiteModel.class);
 
         Unmarshaller unm = cntx.createUnmarshaller();
 
         for (String xml : xmlReports) {
 
             Logger.getGlobal().info(">>>>>>>>>>" + xml);
-            TestSuitesModel ts = (TestSuitesModel) unm.unmarshal(new File(xml));
+            TestSuiteModel ts = (TestSuiteModel) unm.unmarshal(new File(xml));
 
             ts.postProcess();
 
-            processedTestSuites.addAll(ts.getTestsuites());
+            processedTestSuites.add(ts);
         }
     }
 
